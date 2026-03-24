@@ -24,7 +24,7 @@ on:
     branches:
       - "master"
     paths:
-      - "luci-theme-argon/Makefile"
+      - "Makefile"
 env:
   TZ: Asia/Shanghai
 
@@ -100,30 +100,30 @@ jobs:
           echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
           echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
           echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
-          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon
+          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds update -a
-          echo "CONFIG_PACKAGE_luci-theme-argon=m" > .config
-          ./scripts/feeds install -d n luci-theme-argon
+          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
+          ./scripts/feeds install -d n luci-theme-argon-2026
           make download -j8
 
       - name: Configure Argon (master)
         run: |
           cd sdk
-          ./scripts/feeds install luci-theme-argon
+          ./scripts/feeds install luci-theme-argon-2026
           echo "CONFIG_ALL_NONSHARED=n" > .config
           echo "CONFIG_ALL_KMODS=n" >> .config
           echo "CONFIG_ALL=n" >> .config
           echo "CONFIG_AUTOREMOVE=n" >> .config
           echo "CONFIG_LUCI_LANG_zh_Hans=y" >> .config
-          echo "CONFIG_PACKAGE_luci-theme-argon=m" >> .config
+          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" >> .config
           make defconfig
 
       - name: Compile Argon (master)
         id: compile
         run: |
           cd sdk
-          echo "make package/luci-theme-argon/{clean,compile} -j$(nproc)"
-          make package/luci-theme-argon/{clean,compile} -j$(nproc)
+          echo "make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)"
+          make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)
           mv bin/packages/x86_64/base/ ../
           rm .config .config.old
           cd ..
@@ -137,4 +137,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{needs.job_check.outputs.argon_version}}
-          files: ${{ env.FIRMWARE }}/base/luci-theme*.*
+          files: ${{ env.FIRMWARE }}/base/luci-theme-argon-2026*.*
