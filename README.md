@@ -8,6 +8,21 @@
   "MD041": false
 } -->
 
+> **⚠️ AI Modified Version**
+>
+> This is a secondary development version based on [jerrykuku/luci-theme-argon](https://github.com/jerrykuku/luci-theme-argon), modified using AI assistance. The theme directory has been renamed from `argon` to `argon-2026` to support installation alongside the original theme.
+>
+> If you encounter any issues, please feel free to submit an Issue or Pull Request.
+
+### New Screenshots
+
+| | |
+|:---:|:---:|
+| ![screenshot_0](/Screenshots/screenshot_0.png) | ![screenshot_1](/Screenshots/screenshot_1.png) |
+| ![screenshot_2](/Screenshots/screenshot_2.png) | ![screenshot_3](/Screenshots/screenshot_3.png) |
+
+---
+
 [license]: /LICENSE
 [license-badge]: https://img.shields.io/github/license/jerrykuku/luci-theme-argon?style=flat-square&a=1
 [prs]: https://github.com/jerrykuku/luci-theme-argon/pulls

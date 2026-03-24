@@ -8,6 +8,21 @@
   "MD041": false
 } -->
 
+> **⚠️ AI 修改版本**
+>
+> 本项目基于 [jerrykuku/luci-theme-argon](https://github.com/jerrykuku/luci-theme-argon) 进行二次开发，由 AI 辅助修改完成。主题目录已从 `argon` 重命名为 `argon-2026`，支持与原版主题并行安装。
+>
+> 如有任何问题，欢迎提交 Issue 或 Pull Request。
+
+### 新增截图
+
+| | |
+|:---:|:---:|
+| ![screenshot_0](/Screenshots/screenshot_0.png) | ![screenshot_1](/Screenshots/screenshot_1.png) |
+| ![screenshot_2](/Screenshots/screenshot_2.png) | ![screenshot_3](/Screenshots/screenshot_3.png) |
+
+---
+
 [license]: /LICENSE
 [license-badge]: https://img.shields.io/github/license/jerrykuku/luci-theme-argon?style=flat-square&a=1
 [prs]: https://github.com/jerrykuku/luci-theme-argon/pulls

@@ -1,5 +1,76 @@
 # Update log for master branch
 
+> **Note**: The following versions (v1.0.x) are for the AI-modified `luci-theme-argon-2026` fork.
+
+## v1.0.1 [ 2026.03.24 ]
+
+### Bug Fixes
+
+#### Critical Issues
+- **Fixed dark.css and cascade.css file path errors**
+  - Issue: Paths still pointed to the old `argon` directory, causing dark mode to fail loading
+  - Fixed files:
+    - `ucode/template/themes/argon-2026/header.ut:39`
+    - `ucode/template/themes/argon-2026/header_login.ut:38`
+    - `less/dark.less:1`
+    - `less/cascade.less:1`
+  - Changed path from `/www/luci-static/argon/css/` to `/www/luci-static/argon-2026/css/`
+
+- **Fixed body class template syntax error**
+  - Issue: Used JavaScript template string syntax which ucode cannot parse correctly
+  - Fixed file: `ucode/template/themes/argon-2026/header.ut:129`
+  - Changed from `` ` - ${striptags(node.title)}` `` to `' - ' + striptags(node.title)`
+
+#### Medium Issues
+- **Fixed CSS variable duplicate definitions**
+  - Issue: `--light` and `--white` variables were defined twice, with later values overwriting earlier ones
+  - Fixed file: `less/cascade.less`
+  - Removed duplicate variable definitions
+
+- **Fixed typo "Agron" → "Argon"**
+  - Fixed files:
+    - `ucode/template/themes/argon-2026/footer.ut:13`
+    - `ucode/template/themes/argon-2026/footer_login.ut:13`
+    - `less/cascade.less:15`
+    - `less/dark.less:22`
+
+#### Minor Issues
+- **Fixed variable name typo "keyboradHeight" → "keyboardHeight"**
+  - Fixed files:
+    - `ucode/template/themes/argon-2026/footer.ut:38,45`
+    - `ucode/template/themes/argon-2026/footer_login.ut:38,45`
+
+---
+
+### Compatibility
+
+| OpenWrt Version | Status | Description |
+|----------------|--------|-------------|
+| 25.12 | ✅ Fully Compatible | Latest stable version, uses ucode template system |
+| 24.10 | ✅ Fully Compatible | LTS version, uses ucode template system |
+| 23.05 | ✅ Fully Compatible | Uses ucode template system |
+| 22.03 | ❌ Incompatible | Uses Lua template system, requires `.htm` template files |
+| 21.02 and earlier | ❌ Incompatible | Uses Lua template system, requires `.htm` template files |
+
+**Note**: This theme has the same compatibility as the original luci-theme-argon (v2.4.3), only supporting OpenWrt 23.05 and above.
+
+---
+
+## v1.0.0 [ 2026.03.03 ]
+
+### Initial Release
+- First release of luci-theme-argon-2026, based on luci-theme-argon (v2.4.3)
+- Renamed theme directory from `argon` to `argon-2026`
+- Added `postrm` script for automatic cleanup on uninstall:
+  - Removes theme registration info from UCI
+  - Anti-brick mechanism: automatically switches back to default bootstrap theme
+  - Clears LuCI cache
+- Updated package name to `luci-theme-argon-2026`
+
+---
+
+> **Original Versions**: The following versions are from the original luci-theme-argon project.
+
 ## v2.4.3 [ 2025.07.22 ]
 
 - **Refactor**: Remove jQuery dependency, fully replace with vanilla JavaScript

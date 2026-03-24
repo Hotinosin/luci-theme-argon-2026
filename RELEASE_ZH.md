@@ -1,5 +1,76 @@
 # Master 分支的更新日志
 
+> **注意**：以下版本（v1.0.x）为 AI 修改版 `luci-theme-argon-2026` 的更新日志。
+
+## v1.0.1 [ 2026-03-24 ]
+
+### Bug 修复
+
+#### 严重问题
+- **修复 dark.css 和 cascade.css 文件路径错误**
+  - 问题：路径仍指向旧的 `argon` 目录，导致暗色模式无法正常加载
+  - 修复文件：
+    - `ucode/template/themes/argon-2026/header.ut:39`
+    - `ucode/template/themes/argon-2026/header_login.ut:38`
+    - `less/dark.less:1`
+    - `less/cascade.less:1`
+  - 路径从 `/www/luci-static/argon/css/` 改为 `/www/luci-static/argon-2026/css/`
+
+- **修复 body class 模板语法错误**
+  - 问题：使用了 JavaScript 模板字符串语法，ucode 无法正确解析
+  - 修复文件：`ucode/template/themes/argon-2026/header.ut:129`
+  - 从 `` ` - ${striptags(node.title)}` `` 改为 `' - ' + striptags(node.title)`
+
+#### 中等问题
+- **修复 CSS 变量重复定义**
+  - 问题：`--light` 和 `--white` 变量被重复定义，后面的值覆盖了前面的值
+  - 修复文件：`less/cascade.less`
+  - 移除了重复的变量定义
+
+- **修复拼写错误 "Agron" → "Argon"**
+  - 修复文件：
+    - `ucode/template/themes/argon-2026/footer.ut:13`
+    - `ucode/template/themes/argon-2026/footer_login.ut:13`
+    - `less/cascade.less:15`
+    - `less/dark.less:22`
+
+#### 轻微问题
+- **修复变量名拼写错误 "keyboradHeight" → "keyboardHeight"**
+  - 修复文件：
+    - `ucode/template/themes/argon-2026/footer.ut:38,45`
+    - `ucode/template/themes/argon-2026/footer_login.ut:38,45`
+
+---
+
+### 兼容性说明
+
+| OpenWrt 版本 | 兼容状态 | 说明 |
+|-------------|---------|------|
+| 25.12 | ✅ 完全兼容 | 最新稳定版，使用 ucode 模板系统 |
+| 24.10 | ✅ 完全兼容 | LTS 版本，使用 ucode 模板系统 |
+| 23.05 | ✅ 完全兼容 | 使用 ucode 模板系统 |
+| 22.03 | ❌ 不兼容 | 使用 Lua 模板系统，需要 `.htm` 模板文件 |
+| 21.02 及更早 | ❌ 不兼容 | 使用 Lua 模板系统，需要 `.htm` 模板文件 |
+
+**注意**：本主题与原版 luci-theme-argon (v2.4.3) 的兼容性一致，仅支持 OpenWrt 23.05 及以上版本。
+
+---
+
+## v1.0.0 [ 2026-03-03 ]
+
+### 首次发布
+- 基于 luci-theme-argon (v2.4.3) 修改的 luci-theme-argon-2026 首次发布
+- 重命名主题目录从 `argon` 到 `argon-2026`
+- 新增 `postrm` 脚本，实现卸载时自动清理：
+  - 删除 UCI 中的主题注册信息
+  - 防砖机制：自动切换回默认 bootstrap 主题
+  - 清除 LuCI 缓存
+- 更新包名为 `luci-theme-argon-2026`
+
+---
+
+> **原版版本**：以下版本为原版 luci-theme-argon 的更新日志。
+
 ## v2.4.3 [ 2025.07.22 ]
 
 - **重构**: 移除了对 jQuery 库的依赖，全面使用原生 JavaScript 替代
