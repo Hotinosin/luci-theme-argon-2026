@@ -1,0 +1,5 @@
+uci -q batch <<-EOF
+	set luci.themes.Argon2026=/luci-static/argon-2026
+	commit luci
+EOF
+exit 0

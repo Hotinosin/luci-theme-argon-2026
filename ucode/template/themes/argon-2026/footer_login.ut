@@ -1,16 +1,16 @@
 {#
 	Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material Argon Template
 
-	luci-theme-argon
+	luci-theme-argon-2026
 	Copyright 2020 Jerrykuku <jerrykuku@qq.com>
 
 	Have a bug? Please create an issue here on GitHub!
-	https://github.com/jerrykuku/luci-theme-argon/issues
+	https://github.com/jerrykuku/luci-theme-argon-2026/issues
 
 	luci-theme-material:
 	Copyright 2015 Lutty Yang <lutty@wcan.in>
 
-	Agron Theme
+	Argon Theme
 	https://demos.creative-tim.com/argon-dashboard/index.html
 
 	Licensed to the public under the Apache License 2.0
@@ -21,7 +21,7 @@
 <footer style="text-wrap: auto">
 	<div>
 		<a class="luci-link" href="https://github.com/openwrt/luci" target="_blank">Powered by {{ version.luciname }} ({{ version.luciversion }})</a>
-		<a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank">ArgonTheme {# vPKG_VERSION #}</a>
+		<a href="https://github.com/jerrykuku/luci-theme-argon-2026" target="_blank">ArgonTheme {# vPKG_VERSION #}</a>
 		<a class="luci-link" href="{{ version.disturl }}" target="_blank">{{ version.distname }} {{ version.distversion }}-{{ version.distrevision }}</a>
 	</div>
 </footer>
@@ -35,10 +35,10 @@
 		var winWidth = window.innerWidth;
 		if(winWidth < 600){
 			var newHeight = window.innerHeight;
-			var keyboradHeight = newHeight - winHeight;
+			var keyboardHeight = newHeight - winHeight;
 			var ftcElement = document.querySelector(".ftc");
 			if (ftcElement) {
-				ftcElement.style.bottom = (keyboradHeight + 30) + "px";
+				ftcElement.style.bottom = (keyboardHeight + 30) + "px";
 			}
 		}
 	});
