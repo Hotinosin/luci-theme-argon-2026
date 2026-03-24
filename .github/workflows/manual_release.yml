@@ -66,8 +66,8 @@ jobs:
           name: For openwrt official Snapshots LuCI master
           tag_name: ${{steps.check_version.outputs.latest_version}}
 
-  job_build_argon:
-    name: Build Argon (master)
+  job_build_argon_ipk:
+    name: Build Argon ipk (24.10)
     needs: job_check
     if: needs.job_check.outputs.has_update == 'true'
     runs-on: ubuntu-latest
@@ -138,3 +138,76 @@ jobs:
         with:
           tag_name: ${{needs.job_check.outputs.argon_version}}
           files: ${{ env.FIRMWARE }}/base/luci-theme-argon-2026*.*
+
+  job_build_argon_apk:
+    name: Build Argon apk (25.12)
+    needs: job_check
+    if: needs.job_check.outputs.has_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install packages
+        run: |
+          echo "Install packages"
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install zstd build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-venv rsync unzip zlib1g-dev file wget
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+
+      - name: Cache openwrt SDK (apk)
+        id: cache-sdk-apk
+        uses: actions/cache@v3
+        with:
+          path: sdk_apk
+          key: openwrt-sdk-snapshot-25.12-x86-64
+
+      - name: Initialization environment (apk)
+        if: steps.cache-sdk-apk.outputs.cache-hit != 'true'
+        env:
+          url_sdk: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+        run: |
+          wget ${{ env.url_sdk }}
+          file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
+          mkdir sdk_apk && tar --zstd -xvf $file_name -C ./sdk_apk --strip-components=1
+          cd sdk_apk
+          echo "src-git base https://github.com/openwrt/openwrt.git;main" > feeds.conf
+          echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
+          echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
+          echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
+          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
+          ./scripts/feeds update -a
+          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
+          ./scripts/feeds install -d n luci-theme-argon-2026
+          make download -j8
+
+      - name: Configure Argon (apk)
+        run: |
+          cd sdk_apk
+          ./scripts/feeds install luci-theme-argon-2026
+          echo "CONFIG_ALL_NONSHARED=n" > .config
+          echo "CONFIG_ALL_KMODS=n" >> .config
+          echo "CONFIG_ALL=n" >> .config
+          echo "CONFIG_AUTOREMOVE=n" >> .config
+          echo "CONFIG_LUCI_LANG_zh_Hans=y" >> .config
+          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" >> .config
+          make defconfig
+
+      - name: Compile Argon (apk)
+        id: compile_apk
+        run: |
+          cd sdk_apk
+          echo "make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)"
+          make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)
+          mv bin/packages/x86_64/base/ ../base_apk
+          rm .config .config.old
+          cd ..
+          echo "status=success" >> $GITHUB_OUTPUT
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+
+      - name: Upload Argon (master) apks to release
+        uses: softprops/action-gh-release@v1
+        if: steps.compile_apk.outputs.status == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{needs.job_check.outputs.argon_version}}
+          files: ${{ env.FIRMWARE }}/base_apk/luci-theme-argon-2026*.apk
