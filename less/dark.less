@@ -872,7 +872,11 @@ input,
 }
 
 .cbi-section-table-row {
-    background-color: #1e1e1e !important;
+    background-color: #1e1e1e;
+}
+
+.cbi-section-table-row:nth-of-type(2n) {
+    background-color: #252526;
 }
 
 .modal {
@@ -1224,4 +1228,35 @@ input,
 .btn {
     background-color: rgb(112, 112, 112);
     color: #fff;
+}
+
+// Firewall and VLAN table dark mode fixes
+#cbi-firewall-redirect,
+#cbi-network-switch_vlan,
+#cbi-firewall-zone {
+    background-color: #1e1e1e !important;
+
+    table {
+        background-color: transparent;
+
+        tbody tr:nth-of-type(2n) {
+            background-color: #252526;
+        }
+
+        tbody tr {
+            background-color: #1e1e1e;
+        }
+    }
+
+    .table {
+        background-color: transparent;
+
+        .tr:nth-of-type(2n) {
+            background-color: #252526;
+        }
+
+        .tr {
+            background-color: #1e1e1e;
+        }
+    }
 }
