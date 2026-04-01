@@ -4,6 +4,18 @@
 
 ---
 
+## [2026-04-01 / 1.0.2-hotfix]
+
+- 修复“会话已过期”等弹窗问题：
+  - 移除 `text-align: center`，恢复文字左对齐的默认样式。
+  - 为弹窗容器添加 `display: flex; flex-direction: column; justify-content: center;`。
+  - 移除弹窗内首尾元素的纵向 margin，解决由于全局 `*` 选择器导致的文字略微偏下的问题，实现完美的上下居中。
+  - 弹窗宽度从静态的 `20rem` 修改为 `min-width: 20rem; width: max-content; max-width: 90vw;`，并增加 `word-break: break-all;` 和 `overflow-wrap: break-word;` 规则，解决长英文字符串（如 RPC 报错链接）直接溢出边框的缺陷。
+
+- 修复深色模式下部分防火墙表格行依然为白色的问题：
+  - 在 `dark.less` 及编译后的 `dark.css` 中，将 `#cbi-firewall-rule`、`#cbi-firewall-forwarding` 及 `[data-page="admin-status-nftables"] .cbi-section` 纳入深色背景的强制覆盖规则清单，统一配置 `#1e1e1e !important` 的容器背景，以确保所有的隔行（nth-of-type）背景色能正确地渲染为 `#252526` 深灰色，不再透出默认的光亮白色。
+
+
 ## [2026-04-01/1.0.2]
 - 修正“会话已过期”通知框UI错位问题，通过重置 `.container .alert` 与 `.container .alert-message` 的绝对定位并设定 `left: 0; transform: none;` 以适配自适应宽度。
 - 设定通知弹窗文字居中显示，在 `.alert, .alert-message` 中补充 `text-align: center;`。

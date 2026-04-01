@@ -1605,7 +1605,9 @@ footer>a {
 .alert,
 .alert-message {
   position: fixed;
-  width: 20rem;
+  min-width: 20rem;
+  max-width: 90vw;
+  width: max-content;
   z-index: 9000;
   left: 50%;
   top: 50%;
@@ -1617,7 +1619,12 @@ footer>a {
   background-color: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 2px 0 rgba(0, 0, 0, 0.12);
   text-shadow: none;
-  text-align: center;
+  text-align: left;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .alert.error,
@@ -1654,6 +1661,14 @@ footer>a {
 
 .alert-message>* {
   margin: 0.5rem 0;
+}
+
+.alert-message>*:first-child {
+  margin-top: 0;
+}
+
+.alert-message>*:last-child {
+  margin-bottom: 0;
 }
 
 .alert-message .btn {

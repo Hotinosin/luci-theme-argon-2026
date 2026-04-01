@@ -237,15 +237,15 @@ header.bg-primary {
     background-color: #333333;
 }
 
-div>table>tbody>tr,
-div>.table>.tr,
-div>.table>.tbody>.tr {
+table>tbody>tr,
+.table>.tr,
+.table>.tbody>.tr {
     background-color: #1e1e1e;
 }
 
-div>table>tbody>tr:nth-of-type(2n),
-div>.table>.tr:nth-of-type(2n),
-div>.table>.tbody>.tr:nth-of-type(2n) {
+table>tbody>tr:nth-of-type(2n),
+.table>.tr:nth-of-type(2n),
+.table>.tbody>.tr:nth-of-type(2n) {
     background-color: #252526;
 }
 
@@ -1237,7 +1237,10 @@ input,
 // Firewall and VLAN table dark mode fixes
 #cbi-firewall-redirect,
 #cbi-network-switch_vlan,
-#cbi-firewall-zone {
+#cbi-firewall-zone,
+#cbi-firewall-rule,
+#cbi-firewall-forwarding,
+[data-page="admin-status-nftables"] .cbi-section {
     background-color: #1e1e1e !important;
 
     table {
