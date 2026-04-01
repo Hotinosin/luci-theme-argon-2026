@@ -100,7 +100,6 @@ jobs:
           echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
           echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
           echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
-          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
           ./scripts/feeds install -d n luci-theme-argon-2026
@@ -109,6 +108,8 @@ jobs:
       - name: Configure Argon (master)
         run: |
           cd sdk
+          rm -rf package/downloads/luci-theme-argon-2026
+          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds install luci-theme-argon-2026
           echo "CONFIG_ALL_NONSHARED=n" > .config
           echo "CONFIG_ALL_KMODS=n" >> .config
@@ -173,7 +174,6 @@ jobs:
           echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
           echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
           echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
-          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
           ./scripts/feeds install -d n luci-theme-argon-2026
@@ -182,6 +182,8 @@ jobs:
       - name: Configure Argon (apk)
         run: |
           cd sdk_apk
+          rm -rf package/downloads/luci-theme-argon-2026
+          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds install luci-theme-argon-2026
           echo "CONFIG_ALL_NONSHARED=n" > .config
           echo "CONFIG_ALL_KMODS=n" >> .config
