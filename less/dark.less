@@ -237,8 +237,15 @@ header.bg-primary {
     background-color: #333333;
 }
 
+div>table>tbody>tr,
+div>.table>.tr,
+div>.table>.tbody>.tr {
+    background-color: #1e1e1e;
+}
+
 div>table>tbody>tr:nth-of-type(2n),
-div>.table>.tr:nth-of-type(2n) {
+div>.table>.tr:nth-of-type(2n),
+div>.table>.tbody>.tr:nth-of-type(2n) {
     background-color: #252526;
 }
 
@@ -361,10 +368,7 @@ abbr {
     color: #5e72e4;
 }
 
-div>table>tbody>tr:nth-of-type(2n),
-div>.table>.tbody>.tr:nth-of-type(2n) {
-    background-color: #252526;
-}
+
 
 #content_syslog {
     box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, .35)

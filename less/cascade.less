@@ -228,6 +228,7 @@ select[multiple="multiple"] {
   background-color: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
   text-shadow: none;
+  text-align: center;
 
 
   &.error {
@@ -275,7 +276,8 @@ select[multiple="multiple"] {
   margin-top: 0rem;
   position: relative;
   top: 0;
-  transform:translate(-50%, 0);
+  left: 0;
+  transform: none;
   width: 100%;
 }
 
@@ -429,6 +431,8 @@ table,
   overflow-y: hidden;
   width: 100%;
   font-size: 0.75rem;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 }
 
 .table .table-titles th {

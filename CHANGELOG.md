@@ -4,6 +4,12 @@
 
 ---
 
+## [2026-04-01/1.0.2]
+- 修正“会话已过期”通知框UI错位问题，通过重置 `.container .alert` 与 `.container .alert-message` 的绝对定位并设定 `left: 0; transform: none;` 以适配自适应宽度。
+- 设定通知弹窗文字居中显示，在 `.alert, .alert-message` 中补充 `text-align: center;`。
+- 修正浅色与深色模式下个别 table 缺失圆角问题，针对 `table` 和 `.table` 元素增加 `border-radius: var(--border-radius-md); overflow: hidden;`，使其与主题圆角规范一致。
+- 修正深色模式下防火墙 "fw4" 等原生界面的交错行白色背景显示问题，通过在 `dark.less` 中全局声明 `table` 未编号行及奇数行（非 `:nth-of-type(2n)`）的底色为 `#1e1e1e`，避免了浅色模式中 `#ffffff` 造成的视觉冲突。
+
 ## [1.0.1] - 2026-03-24
 
 ### Bug 修复
