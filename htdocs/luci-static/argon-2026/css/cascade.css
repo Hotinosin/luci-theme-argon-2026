@@ -2348,6 +2348,8 @@ td>table>tbody>tr>td,
 }
 
 .cbi-section-node {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

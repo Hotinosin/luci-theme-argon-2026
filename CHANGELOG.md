@@ -17,6 +17,12 @@
   - **核心修复**：将缺失的 `.nft-rules` 与 `[data-page="admin-status-processes"] .table` 同步补齐至 `cascade.less` 和 `dark.less` 的基础覆盖选择器中。
   - 并在 `dark.css` 对应的末尾补充相关规则，统一强制生效 `#1e1e1e !important` 的容器背景和深色阴影 `box-shadow: 0 0 .5rem 0 rgba(0,0,0,0.35)`。这样交错子行（nth-of-type）才能与基础深色正确融合。
 
+- 修复深色模式下 SVG 图表文字不可见的问题：
+  - 在 `dark.less` 及 `dark.css` 中添加 `svg text { fill: #cccccc !important; }`，取消/覆盖了深色模式下继承自 `cascade.css` 的 `#333333` 全局黑色填充（fill），恢复暗黑环境下图表文字的正确可见性。
+
+- 优化表单节节点视觉间距：
+  - 在 `cascade.less` 与编译后的 `cascade.css` 中，为 `.cbi-section-node` 类补充了 `margin-top: 0.8rem; margin-bottom: 0.8rem;`，使整个设置表单区块上下获得更多的留白和呼吸感。
+
 
 ## [2026-04-01/1.0.2]
 - 修正“会话已过期”通知框UI错位问题，通过重置 `.container .alert` 与 `.container .alert-message` 的绝对定位并设定 `left: 0; transform: none;` 以适配自适应宽度。
