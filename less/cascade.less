@@ -230,12 +230,13 @@ select[multiple="multiple"] {
   background-color: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
   text-shadow: none;
-  text-align: left;
+  text-align: left !important;
   word-break: break-all;
   overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
 
 
   &.error {
@@ -309,6 +310,8 @@ select[multiple="multiple"] {
 .cbi-section,
 .cbi-section-error,
 #iptables,
+.nft-rules,
+[data-page="admin-status-processes"] .table,
 .Firewall form,
 #cbi-network>.cbi-section-node,
 #cbi-wireless>.cbi-section-node,

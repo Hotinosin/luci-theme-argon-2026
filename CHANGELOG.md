@@ -7,13 +7,15 @@
 ## [2026-04-01 / 1.0.2-hotfix]
 
 - 修复“会话已过期”等弹窗问题：
-  - 移除 `text-align: center`，恢复文字左对齐的默认样式。
+  - 收到了反馈称文字依然居中，于是加入了强制覆盖属性：`text-align: left !important;` 并配合 `align-items: flex-start;`，此举彻底解决了弹窗子元素因 Flex 伸展属性引发的内容误居中。
   - 为弹窗容器添加 `display: flex; flex-direction: column; justify-content: center;`。
   - 移除弹窗内首尾元素的纵向 margin，解决由于全局 `*` 选择器导致的文字略微偏下的问题，实现完美的上下居中。
   - 弹窗宽度从静态的 `20rem` 修改为 `min-width: 20rem; width: max-content; max-width: 90vw;`，并增加 `word-break: break-all;` 和 `overflow-wrap: break-word;` 规则，解决长英文字符串（如 RPC 报错链接）直接溢出边框的缺陷。
 
-- 修复深色模式下部分防火墙表格行依然为白色的问题：
-  - 在 `dark.less` 及编译后的 `dark.css` 中，将 `#cbi-firewall-rule`、`#cbi-firewall-forwarding` 及 `[data-page="admin-status-nftables"] .cbi-section` 纳入深色背景的强制覆盖规则清单，统一配置 `#1e1e1e !important` 的容器背景，以确保所有的隔行（nth-of-type）背景色能正确地渲染为 `#252526` 深灰色，不再透出默认的光亮白色。
+- 修复深色模式下部分防火墙及进程列表表格行依然为白色的问题：
+  - 经查证，`cascade.css` 中用于 `.nft-rules` 等模块的 `background-color: #fff;` 会致使深色模式下被点亮。切勿直接在 `cascade.css` 中注释掉它（这会导致浅色模式下组件缺乏纯白底色而变为透明阴影卡片）。
+  - **核心修复**：将缺失的 `.nft-rules` 与 `[data-page="admin-status-processes"] .table` 同步补齐至 `cascade.less` 和 `dark.less` 的基础覆盖选择器中。
+  - 并在 `dark.css` 对应的末尾补充相关规则，统一强制生效 `#1e1e1e !important` 的容器背景和深色阴影 `box-shadow: 0 0 .5rem 0 rgba(0,0,0,0.35)`。这样交错子行（nth-of-type）才能与基础深色正确融合。
 
 
 ## [2026-04-01/1.0.2]
