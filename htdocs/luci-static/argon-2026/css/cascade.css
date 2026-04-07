@@ -2406,6 +2406,7 @@ td>table>tbody>tr>td,
 
 .cbi-section-node-tabbed {
   margin-top: 0;
+  margin-bottom: 0;
   border: 0 solid #d4d4d4;
   border-radius: var(--border-radius-md);
 }
