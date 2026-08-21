@@ -1,7 +1,7 @@
-# 版本: v1.0.1
+# 版本: v1.0.4
 # 文件路径: luci-theme-argon-2026/Makefile
-# 修改时间: 2026-03-03 11:58:30
-# 修改功能: 新增 postrm 脚本，实现在通过 opkg remove 卸载时，自动清理 UCI 注册信息、防砖回退主题并清除 LuCI 缓存。
+# 修改时间: 2026-08-21
+# 修改功能: 合并上游更新并恢复本地主题样式修复。
 
 #
 # Copyright (C) 2008-2019 Jerrykuku
@@ -18,8 +18,8 @@ LUCI_TITLE:=Argon Theme 2026 (Tailwind Mod)
 LUCI_DEPENDS:=+USE_APK:wget-any +!USE_APK:wget +jsonfilter
 
 # 更新版本号，便于识别
-PKG_VERSION:=1.0.3
-PKG_RELEASE:=20260407
+PKG_VERSION:=1.0.4
+PKG_RELEASE:=20260821
 
 CONFIG_LUCI_CSSTIDY:=
 
