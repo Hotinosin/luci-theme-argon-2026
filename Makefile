@@ -15,7 +15,7 @@ include $(TOPDIR)/rules.mk
 # 强制声明你的专属包名
 PKG_NAME:=luci-theme-argon-2026
 LUCI_TITLE:=Argon Theme 2026 (Tailwind Mod)
-LUCI_DEPENDS:=+wget +jsonfilter
+LUCI_DEPENDS:=+USE_APK:wget-any +!USE_APK:wget +jsonfilter
 
 # 更新版本号，便于识别
 PKG_VERSION:=1.0.3
