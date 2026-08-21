@@ -4,6 +4,14 @@
 
 ---
 
+## [2026-04-08 / 1.0.3]
+
+- 修复"会话已过期"弹窗中通知脱离弹窗的问题：
+  - `.alert-message` 作为 `.modal` 的子元素时，继承了全局的 `position: fixed` 定位，导致通知文字从白色弹窗中脱离、飘到页面其他位置。
+  - 新增 `.modal > .alert-message` 选择器，将其重置为 `position: static`，使通知文字自然流入弹窗内部布局。
+- 修复弹窗未垂直居中的问题：
+  - 将 `#modal_overlay` 改为 Flexbox 居中布局（`display: flex; align-items: center; justify-content: center`），`.modal` 的 `margin` 从 `5em auto` 改为 `auto`，使弹窗在页面正中间显示。
+
 ## [2026-04-01 / 1.0.2-hotfix]
 
 - 修复“会话已过期”等弹窗问题：
