@@ -1,7 +1,7 @@
-# 版本: v1.0.4
+# 版本: v1.0.5
 # 文件路径: luci-theme-argon-2026/Makefile
-# 修改时间: 2026-08-21
-# 修改功能: 合并上游更新并恢复本地主题样式修复。
+# 修改时间: 2026-08-24
+# 修改功能: 同步上游 v2.4.7，并更新云编译与发布配置。
 
 #
 # Copyright (C) 2008-2019 Jerrykuku
@@ -18,8 +18,8 @@ LUCI_TITLE:=Argon Theme 2026 (Tailwind Mod)
 LUCI_DEPENDS:=+USE_APK:wget-any +!USE_APK:wget +jsonfilter
 
 # 更新版本号，便于识别
-PKG_VERSION:=1.0.4
-PKG_RELEASE:=20260821
+PKG_VERSION:=1.0.5
+PKG_RELEASE:=20260824
 
 CONFIG_LUCI_CSSTIDY:=
 
