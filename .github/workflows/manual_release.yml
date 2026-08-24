@@ -50,8 +50,10 @@ jobs:
         run: |
           latest_version="v$(date +%Y%m%d%H%M)"
           latest_release=$(wget -qO- -t1 -T2 ${{env.url_release}} | awk -F '"' '/tag_name/{print $4}')
+          package_version=$(sed -n 's/^PKG_VERSION:=//p' Makefile)
           has_update=$([ "${latest_version}" != "${latest_release}" ] && echo true || echo false)
           echo "latest_version=${latest_version}" >> $GITHUB_OUTPUT
+          echo "package_version=${package_version}" >> $GITHUB_OUTPUT
           echo "has_update=${has_update}" >> $GITHUB_OUTPUT
           echo "latest_version: ${latest_version}"
           echo "latest_release: ${latest_release}"
@@ -63,8 +65,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: For openwrt official Snapshots LuCI master
+          name: Argon 2026 v${{ steps.check_version.outputs.package_version }}
           tag_name: ${{steps.check_version.outputs.latest_version}}
+          body: |
+            ## 版本基线
+            - 本主题版本：`${{ steps.check_version.outputs.package_version }}`
+            - 上游基线：[`jerrykuku/luci-theme-argon` v2.4.7 `2a28799`](https://github.com/jerrykuku/luci-theme-argon/commit/2a28799ca063aba7edc3314143b93c8325c86df4)（PR #702）
+
+            ## 本次优化
+            - 合并上游的主题资源、元数据与界面兼容性更新。
+            - 恢复本地圆角变量、浅色 SVG 文字显示规则及深色 SVG 文字适配。
+            - 修复表格内 LuCI 下拉菜单被圆角容器裁剪的问题。
+            - 收紧表单行与动态列表的纵向间距至 `0.2rem`。
+            - 包含 24.10（opkg / `.ipk`）与 25.12（apk / `.apk`）构建产物。
 
   job_build_argon_ipk:
     name: Build Argon ipk (24.10)
@@ -85,21 +98,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: sdk
-          key: openwrt-sdk-snapshot-x86-64
+          key: openwrt-sdk-24.10.7-x86-64
 
       - name: Initialization environment
         if: steps.cache-sdk.outputs.cache-hit != 'true'
         env:
-          url_sdk: https://archive.openwrt.org/releases/24.10.0/targets/x86/64/openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+          url_sdk: https://downloads.openwrt.org/releases/24.10.7/targets/x86/64/openwrt-sdk-24.10.7-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
         run: |
           wget ${{ env.url_sdk }}
           file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
           mkdir sdk && tar --zstd -xvf $file_name -C ./sdk --strip-components=1
           cd sdk
-          echo "src-git base https://github.com/openwrt/openwrt.git;main" > feeds.conf
-          echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
-          echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
-          echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
           ./scripts/feeds install -d n luci-theme-argon-2026
@@ -159,21 +168,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: sdk_apk
-          key: openwrt-sdk-snapshot-25.12-x86-64
+          key: openwrt-sdk-25.12.5-x86-64
 
       - name: Initialization environment (apk)
         if: steps.cache-sdk-apk.outputs.cache-hit != 'true'
         env:
-          url_sdk: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst
+          url_sdk: https://downloads.openwrt.org/releases/25.12.5/targets/x86/64/openwrt-sdk-25.12.5-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst
         run: |
           wget ${{ env.url_sdk }}
           file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
           mkdir sdk_apk && tar --zstd -xvf $file_name -C ./sdk_apk --strip-components=1
           cd sdk_apk
-          echo "src-git base https://github.com/openwrt/openwrt.git;main" > feeds.conf
-          echo "src-git-full packages https://github.com/openwrt/packages.git;master" >> feeds.conf
-          echo "src-git-full luci https://github.com/openwrt/luci.git;master" >> feeds.conf
-          echo "src-git-full routing https://git.openwrt.org/feed/routing.git;master"  >> feeds.conf
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
           ./scripts/feeds install -d n luci-theme-argon-2026
