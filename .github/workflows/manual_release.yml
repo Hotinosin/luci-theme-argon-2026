@@ -23,8 +23,6 @@ on:
   push:
     branches:
       - "master"
-    paths:
-      - "Makefile"
 env:
   TZ: Asia/Shanghai
 
