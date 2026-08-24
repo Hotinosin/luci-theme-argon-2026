@@ -1420,20 +1420,6 @@ footer > a {
   transform: none;
   position: static;
 }
-/* Disabled for device testing: keep modal alerts on the standard alert path.
-.modal > .alert-message {
-  position: static;
-  width: 100%;
-  min-width: unset;
-  max-width: none;
-  z-index: auto;
-  left: auto;
-  top: auto;
-  transform: none;
-  margin: 0.5em 0;
-  box-shadow: none;
-}
-*/
 .alert-message > h4 {
   font-size: 110%;
   font-weight: bold;
