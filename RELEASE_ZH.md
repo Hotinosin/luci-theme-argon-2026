@@ -2,6 +2,13 @@
 
 > **注意**：以下版本（v1.0.x）为 AI 修改版 `luci-theme-argon-2026` 的更新日志。
 
+## 上游同步：v2.4.7 [ 2026.08.24 ]
+
+- 修复 OpenClash 表单间距与自定义表格样式。
+- 修复浏览器标签页显示异常。
+- 统一 OpenClash 的 Argon 主题适配层。
+- 上游详情：https://github.com/jerrykuku/luci-theme-argon/releases/tag/v2.4.7
+
 ## v1.0.1 [ 2026-03-24 ]
 
 ### Bug 修复

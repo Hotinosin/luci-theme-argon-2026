@@ -96,7 +96,7 @@ Argon 是**一款干净整洁的 OpenWrt LuCI 主题**，
 
 ## 版本历史
 
-当前最新的版本为 v2.4.3 [点击这里][zh-cn-release-log]查看完整的版本历史日志.
+当前上游 Argon 基线为 v2.4.7，[点击这里][zh-cn-release-log]查看完整的版本历史日志。
 
 ## 快速开始
 

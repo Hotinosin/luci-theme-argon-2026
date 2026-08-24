@@ -2,6 +2,13 @@
 
 > **Note**: The following versions (v1.0.x) are for the AI-modified `luci-theme-argon-2026` fork.
 
+## Upstream sync: v2.4.7 [ 2026.08.24 ]
+
+- Corrected OpenClash form spacing and custom table styles.
+- Fixed incorrect browser tab display.
+- Unified the Argon integration layer for OpenClash.
+- Upstream details: https://github.com/jerrykuku/luci-theme-argon/releases/tag/v2.4.7
+
 ## v1.0.1 [ 2026.03.24 ]
 
 ### Bug Fixes

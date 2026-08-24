@@ -100,7 +100,7 @@ The table below will provide a detailed introduction:
 
 ## Version History
 
-The latest version is v2.4.3 [Click here][en-us-release-log] to view the full version history record.
+The upstream Argon baseline is v2.4.7. [Click here][en-us-release-log] to view the full version history record.
 
 ## Getting started
 
