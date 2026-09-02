@@ -1,0 +1,60 @@
+{%
+	import { readfile, access } from 'fs';
+	import { cursor } from 'uci';
+
+	let cfg = cursor();
+	let mode = 'normal';
+	let bar_color = '#5e72e4';
+	let primary, dark_primary, blur_radius, blur_radius_dark, blur_opacity, blur_opacity_dark;
+	const dark_css = readfile('/www/luci-static/argon-2026/css/dark.css');
+	const has_config = access('/etc/config/argon');
+
+	if (has_config) {
+		primary = cfg.get_first('argon', 'global', 'primary');
+		dark_primary = cfg.get_first('argon', 'global', 'dark_primary');
+		blur_radius = cfg.get_first('argon', 'global', 'blur');
+		blur_radius_dark = cfg.get_first('argon', 'global', 'blur_dark');
+		blur_opacity = cfg.get_first('argon', 'global', 'transparency');
+		blur_opacity_dark = cfg.get_first('argon', 'global', 'transparency_dark');
+		mode = cfg.get_first('argon', 'global', 'mode');
+		bar_color = (mode == 'dark') ? dark_primary : primary;
+	}
+-%}
+<head>
+	{% include("themes/" + theme + "/head_meta", { hostname: hostname, node: node, bar_color: bar_color, media: media }) %}
+
+	<link rel="stylesheet" href="{{ media }}/css/cascade.css{# ?v=PKG_VERSION #}">
+	<style title="text/css">
+		{% if (mode == 'normal'): %}
+			@media (prefers-color-scheme: dark) {
+				{{ dark_css }}
+			}
+		{% endif %}
+		{% if (mode == 'dark'): %}
+			{{ dark_css }}
+		{% endif -%}
+		{% if (has_config): %}
+		:root {
+			--primary: {{ primary }};
+			--dark-primary: {{ dark_primary }};
+			--blur-radius:{{ blur_radius }}px;
+			--blur-opacity:{{ blur_opacity }};
+			--blur-radius-dark:{{ blur_radius_dark }}px;
+			--blur-opacity-dark:{{ blur_opacity_dark }};
+		}
+		{% endif -%}
+	</style>
+	{% if (node?.css): %}
+	<link rel="stylesheet" href="{{ resource }}/{{ node.css}}">
+	{% endif -%}
+	{% if (css): %}
+	<style title="text/css">
+		{{ css }}
+	</style>
+	{% endif -%}
+	{% if (authenticated): %}
+	<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}?v={{ version.luciversion }}"></script>
+	<script src="{{ resource }}/cbi.js?v={{ version.luciversion }}"></script>
+	<script src="{{ resource }}/luci.js?v={{ version.luciversion }}"></script>
+	{% endif %}
+</head>

@@ -71,17 +71,32 @@ jobs:
             - 上游基线：[`jerrykuku/luci-theme-argon` v2.4.7 `2a28799`](https://github.com/jerrykuku/luci-theme-argon/commit/2a28799ca063aba7edc3314143b93c8325c86df4)（PR #702）
 
             ## 本次优化
-            - 合并上游的主题资源、元数据与界面兼容性更新。
-            - 恢复本地圆角变量、浅色 SVG 文字显示规则及深色 SVG 文字适配。
-            - 修复表格内 LuCI 下拉菜单被圆角容器裁剪的问题。
-            - 收紧表单行与动态列表的纵向间距至 `0.2rem`。
+            - 删除无引用图标和旧 WOFF 字体文件。
+            - 使用原生 Web Animations API 精简菜单动画。
+            - 普通页面与登录页面共用主题 head 配置。
+            - 合并重复发布文档和 SDK 构建任务。
             - 包含 24.10（opkg / `.ipk`）与 25.12（apk / `.apk`）构建产物。
 
-  job_build_argon_ipk:
-    name: Build Argon ipk (24.10)
+  job_build_argon:
+    name: Build Argon ${{ matrix.format }} (${{ matrix.version }})
     needs: job_check
     if: needs.job_check.outputs.has_update == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - version: "24.10"
+            release: "24.10.7"
+            sdk: openwrt-sdk-24.10.7-x86-64_gcc-13.3.0_musl.Linux-x86_64
+            sdk_dir: sdk
+            format: ipk
+            output_dir: base
+          - version: "25.12"
+            release: "25.12.5"
+            sdk: openwrt-sdk-25.12.5-x86-64_gcc-14.3.0_musl.Linux-x86_64
+            sdk_dir: sdk_apk
+            format: apk
+            output_dir: base_apk
     steps:
       - name: Install packages
         run: |
@@ -91,30 +106,30 @@ jobs:
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
 
-      - name: Cache openwrt SDK
+      - name: Cache OpenWrt SDK
         id: cache-sdk
         uses: actions/cache@v4
         with:
-          path: sdk
-          key: openwrt-sdk-24.10.7-x86-64
+          path: ${{ matrix.sdk_dir }}
+          key: ${{ matrix.sdk }}
 
       - name: Initialization environment
         if: steps.cache-sdk.outputs.cache-hit != 'true'
         env:
-          url_sdk: https://downloads.openwrt.org/releases/24.10.7/targets/x86/64/openwrt-sdk-24.10.7-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+          url_sdk: https://downloads.openwrt.org/releases/${{ matrix.release }}/targets/x86/64/${{ matrix.sdk }}.tar.zst
         run: |
-          wget ${{ env.url_sdk }}
-          file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
-          mkdir sdk && tar --zstd -xvf $file_name -C ./sdk --strip-components=1
-          cd sdk
+          wget "${{ env.url_sdk }}"
+          mkdir "${{ matrix.sdk_dir }}"
+          tar --zstd -xf "${{ matrix.sdk }}.tar.zst" -C "${{ matrix.sdk_dir }}" --strip-components=1
+          cd "${{ matrix.sdk_dir }}"
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
           ./scripts/feeds install -d n luci-theme-argon-2026
           make download -j8
 
-      - name: Configure Argon (master)
+      - name: Configure Argon
         run: |
-          cd sdk
+          cd "${{ matrix.sdk_dir }}"
           rm -rf package/downloads/luci-theme-argon-2026
           git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
           ./scripts/feeds install luci-theme-argon-2026
@@ -126,93 +141,23 @@ jobs:
           echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" >> .config
           make defconfig
 
-      - name: Compile Argon (master)
+      - name: Compile Argon
         id: compile
         run: |
-          cd sdk
+          cd "${{ matrix.sdk_dir }}"
           echo "make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)"
           make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)
-          mv bin/packages/x86_64/base/ ../
+          mv bin/packages/x86_64/base/ "../${{ matrix.output_dir }}"
           rm .config .config.old
           cd ..
           echo "status=success" >> $GITHUB_OUTPUT
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 
-      - name: Upload Argon (master) ipks to release
+      - name: Upload Argon ${{ matrix.format }} to release
         uses: softprops/action-gh-release@v2
         if: steps.compile.outputs.status == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{needs.job_check.outputs.argon_version}}
-          files: ${{ env.FIRMWARE }}/base/luci-theme-argon-2026*.*
-
-  job_build_argon_apk:
-    name: Build Argon apk (25.12)
-    needs: job_check
-    if: needs.job_check.outputs.has_update == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install packages
-        run: |
-          echo "Install packages"
-          sudo -E apt-get -qq update
-          sudo -E apt-get -qq install zstd build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-venv rsync unzip zlib1g-dev file wget
-          sudo -E apt-get -qq autoremove --purge
-          sudo -E apt-get -qq clean
-
-      - name: Cache openwrt SDK (apk)
-        id: cache-sdk-apk
-        uses: actions/cache@v3
-        with:
-          path: sdk_apk
-          key: openwrt-sdk-25.12.5-x86-64
-
-      - name: Initialization environment (apk)
-        if: steps.cache-sdk-apk.outputs.cache-hit != 'true'
-        env:
-          url_sdk: https://downloads.openwrt.org/releases/25.12.5/targets/x86/64/openwrt-sdk-25.12.5-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst
-        run: |
-          wget ${{ env.url_sdk }}
-          file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
-          mkdir sdk_apk && tar --zstd -xvf $file_name -C ./sdk_apk --strip-components=1
-          cd sdk_apk
-          ./scripts/feeds update -a
-          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" > .config
-          ./scripts/feeds install -d n luci-theme-argon-2026
-          make download -j8
-
-      - name: Configure Argon (apk)
-        run: |
-          cd sdk_apk
-          rm -rf package/downloads/luci-theme-argon-2026
-          git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-theme-argon-2026
-          ./scripts/feeds install luci-theme-argon-2026
-          echo "CONFIG_ALL_NONSHARED=n" > .config
-          echo "CONFIG_ALL_KMODS=n" >> .config
-          echo "CONFIG_ALL=n" >> .config
-          echo "CONFIG_AUTOREMOVE=n" >> .config
-          echo "CONFIG_LUCI_LANG_zh_Hans=y" >> .config
-          echo "CONFIG_PACKAGE_luci-theme-argon-2026=m" >> .config
-          make defconfig
-
-      - name: Compile Argon (apk)
-        id: compile_apk
-        run: |
-          cd sdk_apk
-          echo "make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)"
-          make package/luci-theme-argon-2026/{clean,compile} -j$(nproc)
-          mv bin/packages/x86_64/base/ ../base_apk
-          rm .config .config.old
-          cd ..
-          echo "status=success" >> $GITHUB_OUTPUT
-          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-
-      - name: Upload Argon (master) apks to release
-        uses: softprops/action-gh-release@v1
-        if: steps.compile_apk.outputs.status == 'success'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{needs.job_check.outputs.argon_version}}
-          files: ${{ env.FIRMWARE }}/base_apk/luci-theme-argon-2026*.apk
+          files: ${{ env.FIRMWARE }}/${{ matrix.output_dir }}/luci-theme-argon-2026*.${{ matrix.format }}

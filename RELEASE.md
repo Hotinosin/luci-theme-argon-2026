@@ -2,12 +2,32 @@
 
 > **Note**: The following versions (v1.0.x) are for the AI-modified `luci-theme-argon-2026` fork.
 
+## v1.0.6 [ 2026.09.02 ]
+
+- Removed unused icons and legacy WOFF font files.
+- Replaced the custom menu animation manager with the native Web Animations API.
+- Shared theme head configuration between authenticated and login templates.
+- Consolidated duplicate release documentation.
+- Replaced duplicate SDK build jobs with an ipk/apk matrix.
+
 ## Upstream sync: v2.4.7 [ 2026.08.24 ]
 
 - Corrected OpenClash form spacing and custom table styles.
 - Fixed incorrect browser tab display.
 - Unified the Argon integration layer for OpenClash.
 - Upstream details: https://github.com/jerrykuku/luci-theme-argon/releases/tag/v2.4.7
+
+## v1.0.3 [ 2026.04.08 ]
+
+- Kept modal alerts inside their dialogs instead of using the global fixed positioning.
+- Centered modal dialogs with flexbox.
+
+## v1.0.2 [ 2026.04.01 ]
+
+- Fixed expired-session modal alignment, sizing, and long-text wrapping.
+- Fixed light rows in dark firewall and process tables.
+- Restored readable SVG chart text in dark mode.
+- Improved form-section spacing.
 
 ## v1.0.1 [ 2026.03.24 ]
 
