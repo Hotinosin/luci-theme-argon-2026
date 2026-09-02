@@ -4692,10 +4692,14 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     display: block;
   }
   .showSide {
-    padding: 0.1rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
     position: relative;
     z-index: 99;
-    display: inline-block !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
   }
   .showSide::before {
     font-family: 'argon' !important;
@@ -4778,6 +4782,21 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 }
 @media screen and (max-width: 480px) {
+  #maincontent > .container {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  .cbi-button {
+    min-height: 44px;
+  }
+  .td.cbi-section-actions {
+    flex-basis: 100%;
+  }
+  .td.cbi-section-actions > * {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .mobile-hide {
     display: none;
   }

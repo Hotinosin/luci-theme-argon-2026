@@ -2,6 +2,13 @@
 
 > **Note**: The following versions (v1.0.x) are for the AI-modified `luci-theme-argon-2026` fork.
 
+## v1.0.7 [ 2026.09.02 ]
+
+- Used 375px as the baseline width for iPhone portrait layouts.
+- Reduced small-screen content margins from 16px to 8px.
+- Increased mobile menu and common button touch targets to a minimum height of 44px.
+- Prevented network interface action buttons from being clipped on narrow screens.
+
 ## v1.0.6 [ 2026.09.02 ]
 
 - Removed unused icons and legacy WOFF font files.

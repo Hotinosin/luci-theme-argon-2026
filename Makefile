@@ -1,7 +1,7 @@
-# 版本: v1.0.6
+# 版本: v1.0.7
 # 文件路径: luci-theme-argon-2026/Makefile
 # 修改时间: 2026-09-02
-# 修改功能: 精简主题资源、菜单动画、模板与云编译配置。
+# 修改功能: 优化 iPhone 触摸区域与移动端接口操作布局。
 
 #
 # Copyright (C) 2008-2019 Jerrykuku
@@ -18,7 +18,7 @@ LUCI_TITLE:=Argon Theme 2026 (Tailwind Mod)
 LUCI_DEPENDS:=+USE_APK:wget-any +!USE_APK:wget +jsonfilter
 
 # 更新版本号，便于识别
-PKG_VERSION:=1.0.6
+PKG_VERSION:=1.0.7
 PKG_RELEASE:=20260902
 
 CONFIG_LUCI_CSSTIDY:=

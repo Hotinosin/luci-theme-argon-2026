@@ -414,10 +414,14 @@
 
     // Mobile menu toggle
     .showSide {
-        padding: 0.1rem;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
         position: relative;
         z-index: 99;
-        display: inline-block !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
 
         &::before {
             font-family: 'argon' !important;
@@ -539,6 +543,26 @@
 // ==========================================================================
 
 @media screen and (max-width: 480px) {
+
+    #maincontent>.container {
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+    }
+
+    // Keep common iPhone controls easy to tap and action rows fully visible
+    .cbi-button {
+        min-height: 44px;
+    }
+
+    .td.cbi-section-actions {
+        flex-basis: 100%;
+
+        >* {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
 
     // Hide mobile elements
     .mobile-hide {
